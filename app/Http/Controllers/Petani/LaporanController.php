@@ -8,6 +8,7 @@ use App\Models\Mitra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Chat;
 
 class LaporanController extends Controller
 {
@@ -49,8 +50,10 @@ class LaporanController extends Controller
 
 
     public function show(Laporan $laporan)
+
     {
-        return view('petani.laporan.show', compact('laporan'));
+        $chats = Chat::where('laporan_id', $laporan->id)->with('sender')->latest()->get();
+        return view('petani.laporan.show', compact('laporan', 'chats'));
     }
 
 

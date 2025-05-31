@@ -9,6 +9,8 @@ class Laporan extends Model
 {
     use HasFactory;
 
+    protected $table = 'laporans'; // ✅ sesuai dengan nama tabel di DB
+
     protected $fillable = [
         'pegawai_id',
         'mitra_id',
@@ -36,5 +38,9 @@ class Laporan extends Model
     public function pegawai()
     {
         return $this->belongsTo(User::class, 'pegawai_id')->where('role', 'pegawai');
+    }
+    public function chats()
+    {
+        return $this->hasMany(Chat::class, 'laporan_id');
     }
 }

@@ -25,9 +25,15 @@ use App\Http\Controllers\Pegawai\MitraController as PegawaiMitraController;
 use App\Http\Controllers\Pegawai\LaporanController as PegawaiLaporanController;
 use App\Http\Controllers\Pegawai\AkunController as PegawaiAkunController;
 
+use App\Http\Controllers\ChatController;
+
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -144,6 +150,10 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{mitra}/edit-jumlah-pohon', [PegawaiMitraController::class, 'editJumlahPohon'])->name('edit-jumlah-pohon');
             Route::put('/{mitra}/update-jumlah-pohon', [PegawaiMitraController::class, 'updateJumlahPohon'])->name('update-jumlah-pohon');
         });
+
+
+            Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');
+       
 
         //Laporan management
         Route::prefix('laporan')->name('laporan.')->group(function () {

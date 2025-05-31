@@ -135,7 +135,54 @@
                     </div>
                 </div>
             @endif
+
                 </div>
+                <div class="mb-10">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Forum Chat
+                    </h2>
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <div id="chat-container" class="flex flex-col h-[500px] border border-gray-200 rounded-lg">
+                            <!-- Chat messages -->
+                            <div id="chat-box" class="flex-1 overflow-y-auto p-4">
+                                @forelse ($chats as $chat)
+                                <div class="mb-4">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center flex-shrink-0">
+                                            <span class="text-blue-500 font-bold">{{ $chat->sender->name[0] ?? '?' }}</span>
+                                        </div>
+                                        <div class="ml-4">
+                                            <p class="text-sm font-medium text-gray-800">{{ $chat->sender->name ?? 'Pengguna Tidak Dikenal' }}</p>
+                                            <p class="text-xs text-gray-500">{{ $chat->created_at->format('H:i') }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 bg-gray-100 rounded-lg p-3">
+                                        <p class="text-sm text-gray-800">{{ $chat->message }}</p>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="text-center text-gray-500 mt-10">Belum ada percakapan. Mulailah chat pertama Anda.</div>
+                            @endforelse
+                            </div>
+
+                            <!-- Chat input -->
+                            <form method="POST" action="{{ route('chat.store') }}" class="p-4 border-t border-gray-200">
+                                @csrf
+                                <input type="hidden" name="laporan_id" value="{{ $laporan->id }}">
+                                <input type="hidden" name="receiver_id" value="{{ Auth::id() == $laporan->pegawai->id ? $laporan->mitra->id : $laporan->pegawai->id }}">
+                                <div class="flex items-center">
+                                    <textarea name="message" class="flex-1 border border-gray-300 rounded-lg p-2" rows="1" placeholder="Tulis pesan...">{{ old('message') }}</textarea>
+                                    <button type="submit" class="ml-2 px-4 py-2 bg-indigo-500 text-white rounded-lg">Kirim</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
 
                 <!-- Right column - Mitra info & actions -->
                 <div class="lg:col-span-1 order-1 lg:order-2">

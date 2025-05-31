@@ -154,6 +154,24 @@
                                     </div>
                                 </li>
                             </ul>
+                            <div class="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-100">
+                                <h2 class="text-xl font-semibold text-gray-900 mb-4">Forum Chat</h2>
+                                <div id="chat-box" class="overflow-y-auto h-64 border border-gray-200 rounded-lg p-4">
+                                    @foreach ($chats as $chat)
+                                        <div class="mb-2">
+                                            <strong>{{ $chat->sender->name }}:</strong> {{ $chat->message }}
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <form id="chat-form" method="POST" action="{{ route('chat.store') }}" class="mt-4">
+                                    @csrf
+                                    <input type="hidden" name="laporan_id" value="{{ $laporan->id }}">
+                                    <input type="hidden" name="receiver_id" value="{{ $laporan->pegawai->id }}">
+                                    <textarea name="message" class="w-full border border-gray-300 rounded-lg p-2" rows="3" placeholder="Tulis pesan..."></textarea>
+                                    <button type="submit" class="mt-2 px-4 py-2 bg-indigo-500 text-white rounded-lg">Kirim</button>
+                                </form>
+                            </div>
+
                     </div>
 
                         <!-- Action buttons -->
